@@ -2,6 +2,7 @@ package com.nageoffer.shortlink.admin.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,7 @@ public class UserDO implements Serializable {
     /**
      * ID 雪花算法
      */
+    @NonNull
     private Long id;
 
     /**
