@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nageoffer.shortlink.admin.common.constant.RedisConstants;
-import com.nageoffer.shortlink.admin.common.convention.errorcode.BaseErrorCode;
 import com.nageoffer.shortlink.admin.common.convention.exception.ClientException;
 import com.nageoffer.shortlink.admin.common.enums.UserErrorCodeEnum;
 import com.nageoffer.shortlink.admin.dao.entity.UserDO;
@@ -45,7 +44,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     public void registerUser(UserRegisterReqDTO requestparams) {
         //先检测用户名是否存在
         if (getHaveUsername(requestparams.getUsername())){
-            throw new ClientException(BaseErrorCode.USER_NAME_EXIST_ERROR);
+            throw new ClientException(UserErrorCodeEnum.USER_EXIST);
         }else {
             RLock lock=redissonClient.getLock(RedisConstants.LOCK_USER_REGISTER_KEY+requestparams.getUsername());
             try {
@@ -55,8 +54,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                         throw new ClientException(UserErrorCodeEnum.USER_INSERT_ERROR);
                     }
                     userRegisterCachePenetrationBloomFilter.add(requestparams.getUsername());
+                }else{
+                    throw new ClientException(UserErrorCodeEnum.USER_EXIST);
                 }
-                throw new ClientException(UserErrorCodeEnum.USER_EXIST);
             }finally {
                 lock.unlock();
             }
