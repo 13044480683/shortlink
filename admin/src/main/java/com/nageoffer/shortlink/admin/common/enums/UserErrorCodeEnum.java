@@ -3,7 +3,9 @@ package com.nageoffer.shortlink.admin.common.enums;
 import com.nageoffer.shortlink.admin.common.convention.errorcode.IErrorCode;
 
 public enum UserErrorCodeEnum implements IErrorCode {
-    USER_NULL("A000001","用户不存在");
+    USER_NULL("A000001","用户不存在"),
+    USER_EXIST("A000002","用户名已存在"),
+    USER_INSERT_ERROR("A000101","插入数据库失败");
     private final String code;
 
     private final String message;
