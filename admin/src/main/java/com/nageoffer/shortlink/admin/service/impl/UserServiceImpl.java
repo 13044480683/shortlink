@@ -66,6 +66,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
         }
     }
+    @Override
+    public void updateUser(UserUpdateReqDTO requestParams){
+        //网关检测登录状态
+        LambdaQueryWrapper<UserDO> queryWrapper=Wrappers.lambdaQuery(UserDO.class)
+                        .eq(UserDO::getUsername,requestParams.getUsername());
+        baseMapper.update(BeanUtil.toBean(requestParams,UserDO.class),queryWrapper);
+    }
 
     @Override
     public UserLoginRespDTO loginUser(UserLoginReqDTO requestParams) {
