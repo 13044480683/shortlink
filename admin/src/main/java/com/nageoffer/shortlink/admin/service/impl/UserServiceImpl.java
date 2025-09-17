@@ -9,7 +9,10 @@ import com.nageoffer.shortlink.admin.common.convention.exception.ClientException
 import com.nageoffer.shortlink.admin.common.enums.UserErrorCodeEnum;
 import com.nageoffer.shortlink.admin.dao.entity.UserDO;
 import com.nageoffer.shortlink.admin.dao.mapper.UserMapper;
+import com.nageoffer.shortlink.admin.dto.req.UserLoginReqDTO;
 import com.nageoffer.shortlink.admin.dto.req.UserRegisterReqDTO;
+import com.nageoffer.shortlink.admin.dto.req.UserUpdateReqDTO;
+import com.nageoffer.shortlink.admin.dto.resp.UserLoginRespDTO;
 import com.nageoffer.shortlink.admin.dto.resp.UserRespDTO;
 import com.nageoffer.shortlink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -64,4 +67,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         }
     }
 
+    @Override
+    public UserLoginRespDTO loginUser(UserLoginReqDTO requestParams) {
+        //要做一个防止重复登录的功能
+        LambdaQueryWrapper<UserDO> queryWrapper=Wrappers.lambdaQuery(UserDO.class)
+                .eq(UserDO::getUsername,requestParams.getUsername())
+                .eq(UserDO::getPassword,requestParams.getPassword());
+        if (baseMapper.selectOne(queryWrapper)!=null){
+               //存在 登录成功 redis记录token 并且返回给用户token
+        }else {
+            throw new ClientException("用户名不存在或密码错误");
+        }
+        return new UserLoginRespDTO();
+
+    }
 }

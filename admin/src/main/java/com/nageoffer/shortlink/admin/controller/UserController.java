@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.nageoffer.shortlink.admin.common.convention.result.Result;
 import com.nageoffer.shortlink.admin.common.convention.result.Results;
 import com.nageoffer.shortlink.admin.dto.req.UserRegisterReqDTO;
+import com.nageoffer.shortlink.admin.dto.req.UserUpdateReqDTO;
 import com.nageoffer.shortlink.admin.dto.resp.UserActualRespDTO;
 import com.nageoffer.shortlink.admin.dto.resp.UserRespDTO;
 import com.nageoffer.shortlink.admin.service.UserService;
@@ -32,4 +33,15 @@ public class UserController {
         userService.registerUser(requestParams);
         return Results.success();
     }
+    @PutMapping("/api/shortlink/v1/user/update")
+    public Result<Void> updateUser(@RequestBody UserUpdateReqDTO requestParams){
+        userService.updateUser(requestParams);
+        return Results.success();
+    }
+    //这一部分有些差劲 不需要这块内容了 后续再升级登录模块
+//    @PostMapping ("/api/shortlink/v1/user/login")
+//    public Result<Void> userLogin(@RequestBody UserLoginReqDTO requestParams){
+//        userService.userLogin(requestParams);
+//        return Results.success();
+//    }
 }
